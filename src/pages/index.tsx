@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useState } from "react";
 
 import { api } from "../utils/api";
@@ -10,7 +9,7 @@ const Home: NextPage = () => {
 
   const utils = api.useContext()
   const mutation = api.task.toggle.useMutation({
-    onMutate: async ({id, isCompleted}) => {
+    onMutate: async ({ id, isCompleted }) => {
       await utils.task.getAll.cancel()
 
       const previousTasks = utils.task.getAll.getData()
@@ -27,7 +26,7 @@ const Home: NextPage = () => {
           return task
         })
       })
-      return {previousTasks}
+      return { previousTasks }
     },
     onError: (_err, _task, context) => {
       if (!context) return
@@ -54,8 +53,8 @@ const Home: NextPage = () => {
           <div className="flex flex-col gap-2">
             {tasks.data?.map((task, index) => (
               <div key={index} className="flex items-center justify-start">
-                <input id={`task-${index}`} type="checkbox" value="" checked={task.isCompleted} onChange={() => mutation.mutate({id: task.id, isCompleted: !task.isCompleted})} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                <label htmlFor={`task-${index}`} className={`ml-2 text-xl font-medium text-gray-900 dark:text-gray-300 ${task.isCompleted && "line-through"}`}>{task.text}</label>
+                <input id={`task-${index}`} type="checkbox" value="" checked={task.isCompleted} onChange={() => mutation.mutate({ id: task.id, isCompleted: !task.isCompleted })} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                <label htmlFor={`task-${index}`} className={`ml-2 text-xl font-medium text-gray-900 dark:text-gray-300 ${task.isCompleted ? "line-through" : ""}`}>{task.text}</label>
               </div>
             ))}
           </div>
@@ -90,7 +89,7 @@ const Form = () => {
 
       setText("")
 
-      return {previousTasks}
+      return { previousTasks }
     },
     onError: (_err, newTask, context) => {
       setText(newTask.text)
@@ -105,9 +104,9 @@ const Form = () => {
   return (
     <form
       className="flex gap-2"
-      onSubmit={async (event) => {
+      onSubmit={(event) => {
         event.preventDefault();
-        await mutation.mutateAsync({ text: text })
+        mutation.mutate({ text: text })
       }}
     >
       <input
