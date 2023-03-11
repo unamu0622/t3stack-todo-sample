@@ -29,8 +29,7 @@ const Home: NextPage = () => {
       })
       return {previousTasks}
     },
-    onError: (err, _task, context) => {
-      console.log(err)
+    onError: (_err, _task, context) => {
       if (!context) return
       utils.task.getAll.setData(undefined, () => context.previousTasks)
     },
@@ -93,8 +92,7 @@ const Form = () => {
 
       return {previousTasks}
     },
-    onError: (err, newTask, context) => {
-      console.log(err)
+    onError: (_err, newTask, context) => {
       setText(newTask.text)
       if (!context) return
       utils.task.getAll.setData(undefined, () => context.previousTasks)
